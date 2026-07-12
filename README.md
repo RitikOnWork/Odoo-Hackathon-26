@@ -175,49 +175,50 @@ Available reports:
 
 ## 📊 Dashboard
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/dashboard(1).PNG)
+![Dashboard](screenshots/dashboard(2).PNG)
 
 ---
 
 ## 🚛 Vehicle Management
 
-![Vehicles](screenshots/vehicles.png)
+![Vehicles](screenshots/vehicles.PNG)
 
 ---
 
 ## 👨‍✈️ Driver Management
 
-![Drivers](screenshots/drivers.png)
+![Drivers](screenshots/drivers.PNG)
 
 ---
 
 ## 🛣️ Trip Management
 
-![Trips](screenshots/trips.png)
+![Trips](screenshots/trips.PNG)
 
 ---
 
 ## 🔧 Maintenance
 
-![Maintenance](screenshots/maintenance.png)
+![Maintenance](screenshots/maintenance.PNG)
 
 ---
 
 ## 📍 Live Fleet Tracking
 
-![Fleet Tracking](screenshots/fleet-tracking.png)
+![Fleet Tracking](screenshots/fleet-tracking.PNG)
 
 ---
 
 ## 📈 Analytics
 
-![Analytics](screenshots/analytics.png)
+![Analytics](screenshots/analytics.PNG)
 
 ---
 
 ## 📑 Reports
 
-![Reports](screenshots/reports.png)
+![Reports](screenshots/reports.PNG)
 
 ---
 
