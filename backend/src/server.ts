@@ -10,6 +10,7 @@ import { errorHandler, notFound }  from './middleware/errorHandler.middleware';
 import tripRoutes                  from './routes/trip.routes';
 import maintenanceRoutes           from './routes/maintenance.routes';
 import authRoutes                  from './routes/auth.routes';
+import vehicleRoutes               from './routes/vehicle.routes';
 
 const app: Application = express();
 
@@ -53,10 +54,10 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth',        authRoutes);
 app.use('/api/trips',       tripRoutes);
 app.use('/api/maintenance', maintenanceRoutes);
+app.use('/api/vehicles',    vehicleRoutes);
 
 // Future routes — uncomment as you build them:
-// app.use('/api/vehicles', vehicleRoutes);
-// app.use('/api/drivers',  driverRoutes);
+// app.use('/api/drivers', driverRoutes);
 
 // ── Error Handling (must be last) ─────────────────────────────────────────────
 app.use(notFound);
