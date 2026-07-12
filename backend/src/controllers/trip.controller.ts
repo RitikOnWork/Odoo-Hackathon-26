@@ -3,7 +3,7 @@
  *
  * HTTP layer for Trip endpoints.
  * Responsibilities:
- *  1. Parse and pass validated request data to the service.
+ *  1. Pass validated request data (already parsed by Zod middleware) to the service.
  *  2. Send a structured ApiResponse on success.
  *  3. Delegate all errors to next() — caught by errorHandler middleware.
  *
@@ -15,7 +15,7 @@ import * as tripService from '../services/trip.service';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
 import { TripStatus } from '../constants/enums';
-import { CreateTripInput } from '../validators/trip.validator';
+import { CreateTripInput, CompleteTripInput } from '../validators/trip.validator';
 import { UpdateTripPayload } from '../services/trip.service';
 
 // ── POST /api/trips ───────────────────────────────────────────────────────────
@@ -43,6 +43,20 @@ export const getAllTrips = asyncHandler(
 
     res.status(200).json(
       new ApiResponse(200, result, 'Trips fetched successfully'),
+    );
+  },
+);
+
+// ── GET /api/trips/history ────────────────────────────────────────────────────
+// req.query is pre-validated and coerced by tripHistoryQuerySchema middleware.
+export const getTripHistory = asyncHandler(
+  async (req: Request, res: Response, _next: NextFunction) => {
+    // After Zod middleware, req.query contains correctly typed values
+    // (page/limit are already Numbers, status/sortBy/sortOrder are enum-checked).
+    const result = await tripService.getTripHistory(req.query as Parameters<typeof tripService.getTripHistory>[0]);
+
+    res.status(200).json(
+      new ApiResponse(200, result, 'Trip history fetched successfully'),
     );
   },
 );
@@ -92,3 +106,25 @@ export const dispatchTrip = asyncHandler(
   },
 );
 
+// ── PATCH /api/trips/:id/complete ─────────────────────────────────────────────
+export const completeTrip = asyncHandler(
+  async (req: Request, res: Response, _next: NextFunction) => {
+    const input = req.body as CompleteTripInput;
+    const trip  = await tripService.completeTrip(req.params.id, input);
+
+    res.status(200).json(
+      new ApiResponse(200, trip, `Trip ${trip.tripNumber} completed successfully`),
+    );
+  },
+);
+
+// ── PATCH /api/trips/:id/cancel ───────────────────────────────────────────────
+export const cancelTrip = asyncHandler(
+  async (req: Request, res: Response, _next: NextFunction) => {
+    const trip = await tripService.cancelTrip(req.params.id);
+
+    res.status(200).json(
+      new ApiResponse(200, trip, `Trip ${trip.tripNumber} cancelled successfully`),
+    );
+  },
+);

@@ -5,7 +5,7 @@ dotenv.config();
 import Vehicle from '../models/Vehicle.model';
 import Driver from '../models/Driver.model';
 import Trip from '../models/Trip.model';
-import { VehicleStatus, DriverStatus } from '../constants/enums';
+import { VehicleStatus, DriverStatus, TripStatus } from '../constants/enums';
 
 async function testDispatch() {
   console.log('🔄 Connecting to database for seeding...');
@@ -53,48 +53,146 @@ async function testDispatch() {
     });
     console.log(`👨 Seeded Driver: ${driver.name} (Status: ${driver.status})`);
 
+    // ─── TEST FLOW 1: DISPATCH AND CANCEL ───
+    console.log('\n--- FLOW 1: DISPATCH AND CANCEL ---');
 
-    // 4. Create Trip (Draft)
-    const trip = await Trip.create({
+    // Create Trip 1 (Draft)
+    const trip1 = await Trip.create({
       source: 'Pune Warehouse A',
       destination: 'Mumbai Port Hub',
+      vehicle: vehicle._id,
+      driver: driver._id,
+      cargoWeight: 4000,
+      plannedDistance: 150,
+    });
+    console.log(`📋 Created Trip 1: ${trip1.tripNumber} (Status: ${trip1.status})`);
+
+    // Try to cancel a Draft trip (should fail with 409)
+    console.log('🚀 Trying to cancel Draft trip (expecting 409)...');
+    const cancelDraftResponse = await fetch(`http://localhost:5000/api/trips/${trip1._id}/cancel`, {
+      method: 'PATCH',
+    });
+    const cancelDraftResult = await cancelDraftResponse.json() as any;
+    console.log(`📥 Response Status: ${cancelDraftResponse.status} (Expected: 409)`);
+    console.log(`📥 Response Message: ${cancelDraftResult.message}`);
+
+    // Dispatch Trip 1
+    console.log('🚀 Dispatching Trip 1...');
+    const dispatchResponse1 = await fetch(`http://localhost:5000/api/trips/${trip1._id}/dispatch`, {
+      method: 'PATCH',
+    });
+    const dispatchResult1 = await dispatchResponse1.json() as any;
+    console.log(`📥 Response Status: ${dispatchResponse1.status} (Expected: 200)`);
+    console.log(`Trip 1 Status after dispatch: ${dispatchResult1.data.status}`);
+
+    // Cancel Trip 1
+    console.log('🚀 Cancelling Trip 1...');
+    const cancelResponse = await fetch(`http://localhost:5000/api/trips/${trip1._id}/cancel`, {
+      method: 'PATCH',
+    });
+    const cancelResult = await cancelResponse.json() as any;
+    console.log(`📥 Response Status: ${cancelResponse.status} (Expected: 200)`);
+    console.log('📥 Response Data:', JSON.stringify(cancelResult, null, 2));
+
+    // Verify DB states after cancellation
+    const [cancelledTrip, releasedVehicle, releasedDriver] = await Promise.all([
+      Trip.findById(trip1._id),
+      Vehicle.findById(vehicle._id),
+      Driver.findById(driver._id),
+    ]);
+
+    console.log('\n🔍 Verification after cancellation:');
+    console.log(`Trip 1 Status: ${cancelledTrip?.status} (Expected: Cancelled)`);
+    console.log(`Vehicle Status: ${releasedVehicle?.status} (Expected: Available)`);
+    console.log(`Driver Status: ${releasedDriver?.status} (Expected: Available)`);
+
+    if (
+      cancelledTrip?.status === TripStatus.CANCELLED &&
+      releasedVehicle?.status === VehicleStatus.AVAILABLE &&
+      releasedDriver?.status === DriverStatus.AVAILABLE
+    ) {
+      console.log('🎉 CANCEL TEST PASSED!');
+    } else {
+      console.error('❌ CANCEL TEST FAILED!');
+    }
+
+
+    // ─── TEST FLOW 2: DISPATCH AND COMPLETE ───
+    console.log('\n--- FLOW 2: DISPATCH AND COMPLETE ---');
+
+    // Create Trip 2 (Draft)
+    const trip2 = await Trip.create({
+      source: 'Mumbai Port Hub',
+      destination: 'Pune Warehouse A',
       vehicle: vehicle._id,
       driver: driver._id,
       cargoWeight: 4500,
       plannedDistance: 150.5,
     });
-    console.log(`📋 Created Trip: ${trip.tripNumber} (Status: ${trip.status})`);
+    console.log(`📋 Created Trip 2: ${trip2.tripNumber} (Status: ${trip2.status})`);
 
-    // 5. Send POST to dispatch endpoint via built-in fetch
-    console.log(`🚀 Sending PATCH request to dispatch trip: ${trip._id}...`);
-    const response = await fetch(`http://localhost:5000/api/trips/${trip._id}/dispatch`, {
+    // Dispatch Trip 2
+    console.log('🚀 Dispatching Trip 2...');
+    const dispatchResponse2 = await fetch(`http://localhost:5000/api/trips/${trip2._id}/dispatch`, {
       method: 'PATCH',
     });
+    const dispatchResult2 = await dispatchResponse2.json() as any;
+    console.log(`📥 Response Status: ${dispatchResponse2.status} (Expected: 200)`);
+    console.log(`Trip 2 Status after dispatch: ${dispatchResult2.data.status}`);
 
-    const result = await response.json() as any;
-    console.log(`📥 Response Status: ${response.status}`);
-    console.log('📥 Response Data:', JSON.stringify(result, null, 2));
+    // Test Odometer Validation (Final Odometer less than current vehicle odometer)
+    console.log('🚀 Testing invalid final odometer validation (expecting 400)...');
+    const invalidCompleteResponse = await fetch(`http://localhost:5000/api/trips/${trip2._id}/complete`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        actualDistance: 152.2,
+        finalOdometer: 14000, // less than current odometer of 15000
+        fuelConsumed: 12.5,
+      }),
+    });
+    const invalidResult = await invalidCompleteResponse.json() as any;
+    console.log(`📥 Response Status: ${invalidCompleteResponse.status} (Expected: 400)`);
+    console.log(`📥 Response Message: ${invalidResult.message}`);
 
-    // 6. Verify statuses after dispatch
-    const [updatedTrip, updatedVehicle, updatedDriver] = await Promise.all([
-      Trip.findById(trip._id),
+    // Test Valid Completion
+    console.log('🚀 Sending PATCH request to complete Trip 2...');
+    const completeResponse = await fetch(`http://localhost:5000/api/trips/${trip2._id}/complete`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        actualDistance: 152.2,
+        finalOdometer: 15152, // greater than current odometer of 15000
+        fuelConsumed: 12.5,
+      }),
+    });
+
+    const completeResult = await completeResponse.json() as any;
+    console.log(`📥 Response Status: ${completeResponse.status} (Expected: 200)`);
+    console.log('📥 Response Data:', JSON.stringify(completeResult, null, 2));
+
+    // Verify DB states after completion
+    const [finalTrip, finalVehicle, finalDriver] = await Promise.all([
+      Trip.findById(trip2._id),
       Vehicle.findById(vehicle._id),
       Driver.findById(driver._id),
     ]);
 
-    console.log('\n🔍 Verification after dispatch:');
-    console.log(`Trip Status: ${updatedTrip?.status} (Expected: Dispatched)`);
-    console.log(`Vehicle Status: ${updatedVehicle?.status} (Expected: On Trip)`);
-    console.log(`Driver Status: ${updatedDriver?.status} (Expected: On Trip)`);
+    console.log('\n🔍 Verification after completion:');
+    console.log(`Trip 2 Status: ${finalTrip?.status} (Expected: Completed)`);
+    console.log(`Vehicle Status: ${finalVehicle?.status} (Expected: Available)`);
+    console.log(`Vehicle Odometer: ${finalVehicle?.odometer} km (Expected: 15152 km)`);
+    console.log(`Driver Status: ${finalDriver?.status} (Expected: Available)`);
 
     if (
-      updatedTrip?.status === 'Dispatched' &&
-      updatedVehicle?.status === 'On Trip' &&
-      updatedDriver?.status === 'On Trip'
+      finalTrip?.status === TripStatus.COMPLETED &&
+      finalVehicle?.status === VehicleStatus.AVAILABLE &&
+      finalVehicle?.odometer === 15152 &&
+      finalDriver?.status === DriverStatus.AVAILABLE
     ) {
-      console.log('\n🎉 TEST PASSED SUCCESSFULLY!');
+      console.log('🎉 ALL TESTS PASSED SUCCESSFULLY!');
     } else {
-      console.error('\n❌ TEST FAILED: Statuses did not match expected values.');
+      console.error('❌ COMPLETION TEST FAILED!');
     }
   } catch (error) {
     console.error('❌ Test encountered error:', error);

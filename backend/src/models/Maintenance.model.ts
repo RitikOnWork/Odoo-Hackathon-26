@@ -24,7 +24,6 @@ const MaintenanceSchema = new Schema<IMaintenanceDocument>(
       type:     Schema.Types.ObjectId,
       ref:      'Vehicle',
       required: [true, 'Vehicle reference is required'],
-      index:    true,
     },
 
     maintenanceType: {
@@ -72,7 +71,13 @@ const MaintenanceSchema = new Schema<IMaintenanceDocument>(
 );
 
 // ── Indexes ───────────────────────────────────────────────────────────────────
-MaintenanceSchema.index({ vehicle: 1, status: 1 });           // active-maintenance check per vehicle
+MaintenanceSchema.index(
+  { vehicle: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { status: MaintenanceStatus.ACTIVE },
+  },
+); // prevents competing active maintenance jobs for one vehicle
 MaintenanceSchema.index({ status: 1, startDate: -1 });        // ops dashboard: latest active jobs
 
 // ── Virtual: durationDays ─────────────────────────────────────────────────────

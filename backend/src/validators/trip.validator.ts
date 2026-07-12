@@ -5,10 +5,12 @@
  * Each schema is accompanied by its inferred TypeScript type.
  *
  * Schemas exported:
- *  - createTripSchema       → POST /trips
- *  - updateTripStatusSchema → PATCH /trips/:id/status
- *  - completeTripSchema     → PATCH /trips/:id/complete  (adds actuals on closure)
- *  - tripIdParamSchema      → route param :id validation
+ *  - createTripSchema          → POST /trips
+ *  - updateTripBodySchema      → PUT /trips/:id
+ *  - updateTripStatusSchema    → (internal utility)
+ *  - completeTripSchema        → PATCH /trips/:id/complete
+ *  - tripHistoryQuerySchema    → GET /trips/history
+ *  - tripIdParamSchema         → route param :id validation
  */
 
 import { z } from 'zod';
@@ -96,6 +98,48 @@ export const completeTripSchema = z.object({
 });
 
 export type CompleteTripInput = z.infer<typeof completeTripSchema>;
+
+// ── Trip History Query (GET /trips/history) ───────────────────────────────────
+// All fields are optional. Query strings come in as strings, so numeric fields
+// use coerce to convert them before validation.
+export const tripHistoryQuerySchema = z.object({
+  page: z
+    .string()
+    .optional()
+    .transform((v) => (v !== undefined ? Number(v) : undefined))
+    .pipe(z.number().int().positive().optional()),
+
+  limit: z
+    .string()
+    .optional()
+    .transform((v) => (v !== undefined ? Number(v) : undefined))
+    .pipe(z.number().int().positive().max(100).optional()),
+
+  search: z.string().trim().min(1).max(200).optional(),
+
+  status: z
+    .nativeEnum(TripStatus, {
+      invalid_type_error: `status must be one of: ${Object.values(TripStatus).join(', ')}`,
+    })
+    .optional(),
+
+  vehicle: mongoId.optional(),
+  driver:  mongoId.optional(),
+
+  sortBy: z
+    .enum(['createdAt', 'completedAt'], {
+      invalid_type_error: "sortBy must be 'createdAt' or 'completedAt'",
+    })
+    .optional(),
+
+  sortOrder: z
+    .enum(['asc', 'desc'], {
+      invalid_type_error: "sortOrder must be 'asc' or 'desc'",
+    })
+    .optional(),
+});
+
+export type TripHistoryQuery = z.infer<typeof tripHistoryQuerySchema>;
 
 // ── Route Param: :id ──────────────────────────────────────────────────────────
 export const tripIdParamSchema = z.object({
