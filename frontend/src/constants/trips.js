@@ -1,0 +1,55 @@
+export const tripData = [
+  {
+    id: 'TRIP-1001',
+    vehicle: 'VT-204',
+    driver: 'Amina Yusuf',
+    source: 'Nairobi Hub',
+    destination: 'Mombasa Port',
+    distance: '420 km',
+    status: 'Active',
+    startTime: '08:30 AM',
+  },
+  {
+    id: 'TRIP-1002',
+    vehicle: 'TR-118',
+    driver: 'Daniel Kim',
+    source: 'Kisumu Depot',
+    destination: 'Nakuru Terminal',
+    distance: '180 km',
+    status: 'Completed',
+    startTime: '06:15 AM',
+  },
+  {
+    id: 'TRIP-1003',
+    vehicle: 'BUS-305',
+    driver: 'Sara Mendez',
+    source: 'Eldoret Yard',
+    destination: 'Kakamega City',
+    distance: '95 km',
+    status: 'Pending',
+    startTime: '10:00 AM',
+  },
+  {
+    id: 'TRIP-1004',
+    vehicle: 'VT-412',
+    driver: 'Noah Brooks',
+    source: 'Nakuru Depot',
+    destination: 'Naivasha Gate',
+    distance: '72 km',
+    status: 'Cancelled',
+    startTime: '04:40 PM',
+  },
+  {
+    id: 'TRIP-1005',
+    vehicle: 'TR-227',
+    driver: 'Lina Patel',
+    source: 'Mombasa Terminal',
+    destination: 'Nairobi Hub',
+    distance: '500 km',
+    status: 'Active',
+    startTime: '07:00 AM',
+  },
+];
+
+export const tripStatuses = ['All', 'Active', 'Completed', 'Pending', 'Cancelled'];
+export const tripRegions = ['All', 'Nairobi', 'Nakuru', 'Mombasa', 'Kisumu'];
