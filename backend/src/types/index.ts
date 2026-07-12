@@ -8,9 +8,9 @@
 
 export * from './trip.types';
 export * from './maintenance.types';
+export * from './vehicle.types';
+export * from './driver.types';
 
-// Future types — uncomment as you build them:
-// export * from './user.types';
 // export * from './vehicle.types';
 // export * from './driver.types';
 // export * from './route.types';

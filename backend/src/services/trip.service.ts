@@ -14,9 +14,11 @@
  */
 
 import mongoose from 'mongoose';
-import Trip from '../models/Trip.model';
-import { ApiError } from '../utils/ApiError';
-import { TripStatus } from '../constants/enums';
+import Trip    from '../models/Trip.model';
+import Vehicle from '../models/Vehicle.model';
+import Driver  from '../models/Driver.model';
+import { ApiError }      from '../utils/ApiError';
+import { TripStatus, VehicleStatus, DriverStatus } from '../constants/enums';
 import { CreateTripInput } from '../validators/trip.validator';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -45,6 +47,90 @@ function assertObjectId(value: string, fieldName: string): void {
   }
 }
 
+// ── Pre-trip Creation Guard ───────────────────────────────────────────────────
+
+/**
+ * Runs all vehicle + driver eligibility checks in parallel before a trip
+ * is created. Throws a descriptive ApiError on the first failed rule.
+ *
+ * Checks performed:
+ *  Vehicle:
+ *    1. Vehicle exists in the database
+ *    2. Vehicle is not Retired
+ *    3. Vehicle is not In Shop
+ *    4. Vehicle status is Available
+ *
+ *  Driver:
+ *    5. Driver exists in the database
+ *    6. Driver is not Suspended
+ *    7. Driver license is not expired (licenseExpiry > now)
+ *    8. Driver status is Available
+ */
+async function validateTripPreConditions(
+  vehicleId: string,
+  driverId:  string,
+): Promise<void> {
+  // Fetch both in parallel — one round-trip to the DB
+  const [vehicle, driver] = await Promise.all([
+    Vehicle.findById(vehicleId).select('status plateNumber').lean(),
+    Driver.findById(driverId).select('status licenseExpiry name').lean(),
+  ]);
+
+  // ── Vehicle checks ────────────────────────────────────────────────────────
+  if (!vehicle) {
+    throw new ApiError(404, `Vehicle not found (id: ${vehicleId})`);
+  }
+
+  if (vehicle.status === VehicleStatus.RETIRED) {
+    throw new ApiError(
+      422,
+      `Vehicle "${vehicle.plateNumber}" is Retired and cannot be assigned to a trip`,
+    );
+  }
+
+  if (vehicle.status === VehicleStatus.IN_SHOP) {
+    throw new ApiError(
+      422,
+      `Vehicle "${vehicle.plateNumber}" is currently In Shop (under maintenance) and cannot be dispatched`,
+    );
+  }
+
+  if (vehicle.status !== VehicleStatus.AVAILABLE) {
+    throw new ApiError(
+      422,
+      `Vehicle "${vehicle.plateNumber}" is not Available. Current status: ${vehicle.status}`,
+    );
+  }
+
+  // ── Driver checks ─────────────────────────────────────────────────────────
+  if (!driver) {
+    throw new ApiError(404, `Driver not found (id: ${driverId})`);
+  }
+
+  if (driver.status === DriverStatus.SUSPENDED) {
+    throw new ApiError(
+      422,
+      `Driver "${driver.name}" is Suspended and cannot be assigned to a trip`,
+    );
+  }
+
+  const now = new Date();
+  if (new Date(driver.licenseExpiry) <= now) {
+    const expiredOn = new Date(driver.licenseExpiry).toLocaleDateString('en-IN');
+    throw new ApiError(
+      422,
+      `Driver "${driver.name}" has an expired license (expired on ${expiredOn}). Renew the license before assigning trips`,
+    );
+  }
+
+  if (driver.status !== DriverStatus.AVAILABLE) {
+    throw new ApiError(
+      422,
+      `Driver "${driver.name}" is not Available. Current status: ${driver.status}`,
+    );
+  }
+}
+
 // ── Service Methods ───────────────────────────────────────────────────────────
 
 /**
@@ -58,6 +144,11 @@ export async function createTrip(input: CreateTripInput) {
   assertObjectId(vehicleId, 'vehicleId');
   assertObjectId(driverId,  'driverId');
 
+  // ── Pre-creation eligibility checks ──────────────────────────────────────
+  // Validates vehicle + driver exist and are eligible before touching the
+  // trips collection. Throws a descriptive 404/422 ApiError on any failure.
+  await validateTripPreConditions(vehicleId, driverId);
+
   const trip = await Trip.create({
     ...rest,
     vehicle: vehicleId,
@@ -67,6 +158,7 @@ export async function createTrip(input: CreateTripInput) {
 
   return trip;
 }
+
 
 /**
  * GET /api/trips
