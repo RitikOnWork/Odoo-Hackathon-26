@@ -1,17 +1,17 @@
 /**
- * models/
+ * models/index.ts
+ * Barrel export — import any model from '@models' instead of deep paths.
  *
- * Purpose: Mongoose schema definitions and compiled Model objects.
- *
- * What goes here:
- *  - User.model.ts     → User schema (email, password hash, role)
- *  - Vehicle.model.ts  → Vehicle schema (plate, type, capacity, status)
- *  - Driver.model.ts   → Driver schema (license, assigned vehicle, status)
- *  - Route.model.ts    → Route schema (stops, schedule, distance)
- *  - Trip.model.ts     → Trip schema (route ref, driver ref, timestamps)
- *
- * Rule:
- *  - One file per collection.
- *  - Export both the Mongoose Document interface AND the compiled Model.
- *  - Pre-save hooks (e.g. password hashing) and instance methods live here.
+ * Usage:
+ *   import { Trip, Maintenance } from '../models';
  */
+
+export { default as Counter }     from './Counter.model';
+export { default as Trip }        from './Trip.model';
+export { default as Maintenance } from './Maintenance.model';
+
+// Future models — uncomment as you build them:
+// export { default as User }    from './User.model';
+// export { default as Vehicle } from './Vehicle.model';
+// export { default as Driver }  from './Driver.model';
+// export { default as Route }   from './Route.model';
