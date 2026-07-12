@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from '../components/Layout';
 import Login from '../pages/Login';
+import Signup from '../pages/Signup';
 import DashboardPage from '../pages/DashboardPage';
 import VehiclesPage from '../pages/VehiclesPage';
 import DriversPage from '../pages/DriversPage';
@@ -15,6 +16,7 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
