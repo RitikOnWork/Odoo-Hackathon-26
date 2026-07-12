@@ -165,7 +165,6 @@ Available reports:
 
 # 📸 Project Gallery
 
-> Replace these images with your project screenshots.
 
 ## 🔐 Authentication
 
