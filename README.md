@@ -169,7 +169,7 @@ Available reports:
 
 ## 🔐 Authentication
 
-![Login](screenshots/login.png)
+![Login](screenshots/login.PNG)
 
 ---
 
