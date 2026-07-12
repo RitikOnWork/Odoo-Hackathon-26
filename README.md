@@ -180,27 +180,9 @@ Available reports:
 
 ---
 
-## 🚛 Vehicle Management
-
-![Vehicles](screenshots/vehicles.PNG)
-
----
-
 ## 👨‍✈️ Driver Management
 
 ![Drivers](screenshots/drivers.PNG)
-
----
-
-## 🛣️ Trip Management
-
-![Trips](screenshots/trips.PNG)
-
----
-
-## 🔧 Maintenance
-
-![Maintenance](screenshots/maintenance.PNG)
 
 ---
 
@@ -209,10 +191,16 @@ Available reports:
 ![Fleet Tracking](screenshots/fleet-tracking.PNG)
 
 ---
+##📊 AI Route Optimization
+
+![Fleet Tracking](screenshots/route-optimisation.PNG)
+
+---
 
 ## 📈 Analytics
 
-![Analytics](screenshots/analytics.PNG)
+![Analytics](screenshots/analytics(1).PNG)
+![Analytics](screenshots/analytics(2).PNG)
 
 ---
 
