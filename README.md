@@ -1,107 +1,250 @@
-# 🚍 TransitOps – Smart Transport Operations Platform
+<div align="center">
 
-> An AI-powered enterprise fleet management and transport operations platform built to streamline fleet monitoring, vehicle management, maintenance scheduling, operational analytics, and transport intelligence.
+# 🚍 TransitOps
 
-![React](https://img.shields.io/badge/React-18-blue?logo=react)
-![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8?logo=tailwind-css)
+### AI-Powered Smart Transport Operations Platform
+
+An enterprise-grade fleet management and transport operations platform that centralizes vehicle monitoring, driver management, maintenance scheduling, expense tracking, operational analytics, and live fleet insights into a single intelligent dashboard.
+
+### 🚀 Built for Odoo Hackathon 2026
+
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)
-![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8?logo=tailwind-css)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js)
+![Express](https://img.shields.io/badge/Express.js-000000?logo=express)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+</div>
 
 ---
 
-## 📖 Overview
+# 📖 Overview
 
-TransitOps is a modern transport operations platform designed for fleet operators, logistics companies, and public transportation agencies.
+Modern transport organizations often rely on multiple disconnected systems to manage vehicles, drivers, maintenance schedules, operational expenses, and trip monitoring. This fragmentation reduces operational efficiency and limits real-time decision-making.
 
-It provides a centralized command center for monitoring vehicles, managing drivers, tracking trips, scheduling maintenance, analyzing operational performance, and optimizing fleet operations through an intuitive enterprise dashboard.
+**TransitOps** solves this challenge by providing a unified Smart Transport Operations Platform that enables fleet managers to monitor operations, manage resources, analyze performance, and make data-driven decisions through an intuitive enterprise dashboard.
+
+Designed with a modern SaaS experience, TransitOps combines operational management with powerful analytics to deliver a scalable solution for fleet and transport administration.
 
 ---
 
-## ✨ Features
+# ✨ Key Features
 
-### 📊 Dashboard
+## 📊 Enterprise Dashboard
+
 - Real-time operational overview
+- Fleet utilization metrics
 - KPI summary cards
-- Fleet health insights
-- Active trip statistics
-- Vehicle availability monitoring
+- Vehicle availability tracking
+- Recent operational activity
+- Interactive analytics
 
-### 🚛 Vehicle Management
-- Vehicle inventory
-- Search & filtering
+---
+
+## 🚛 Vehicle Management
+
+- Complete vehicle inventory
 - Vehicle status monitoring
-- Fuel level tracking
-- Service history
-- Detailed vehicle profiles
+- Search and advanced filtering
+- Vehicle profile management
+- Fleet availability tracking
 
-### 👨‍✈️ Driver Management
+---
+
+## 👨‍✈️ Driver Management
+
 - Driver directory
 - License information
 - Experience tracking
-- Duty status
+- Duty status management
 - Driver profile modal
+- Contact management
 
-### 🛣️ Trip Management
+---
+
+## 🛣️ Trip Management
+
 - Trip scheduling
 - Route information
-- Source & destination
-- Trip status monitoring
+- Source & destination tracking
 - Driver assignment
+- Trip lifecycle monitoring
+- Status management
 
-### 🔧 Maintenance Management
-- Service scheduling
-- Maintenance status tracking
+---
+
+## 🔧 Maintenance Management
+
+- Maintenance scheduling
+- Service history
 - Technician assignments
 - Cost estimation
-- Maintenance history
+- Vehicle maintenance status
+- Upcoming service tracking
 
-### ⛽ Fuel Logs
-- Fuel consumption records
+---
+
+## ⛽ Fuel Management
+
+- Fuel log management
 - Mileage tracking
-- Fuel efficiency insights
-- Cost monitoring
+- Fuel efficiency monitoring
+- Cost analytics
+- Vehicle fuel history
 
-### 💰 Expense Management
+---
+
+## 💰 Expense Management
+
 - Operational expense tracking
 - Expense categorization
-- Payment status
 - Financial overview
+- Payment status monitoring
+- Expense history
 
-### 📑 Reports
+---
+
+## 📈 Analytics Dashboard
+
+Interactive operational analytics using modern visualizations.
+
+Includes:
+
+- Fleet Utilization
+- Fuel Consumption Trends
+- Monthly Trips
+- Maintenance Cost Analysis
+- Operational KPIs
+- Performance Metrics
+
+---
+
+## 📍 Live Fleet Tracking
+
+Monitor fleet operations through an interactive map interface.
+
+Features:
+
+- Live vehicle visualization
+- Vehicle status indicators
+- Route monitoring
+- Fleet overview
+- Vehicle details panel
+- Real-time operational dashboard
+
+---
+
+## 📑 Reports
+
+Generate and monitor operational reports.
+
+Available reports:
+
 - Fleet Reports
 - Fuel Reports
 - Maintenance Reports
 - Driver Performance Reports
-- Trip Analysis Reports
-- Export-ready report interface
-
-### 📍 Live Fleet Tracking
-- Interactive fleet map
-- Vehicle location visualization
-- Vehicle status indicators
-- Fleet monitoring dashboard
-
-### 📈 Analytics Dashboard
-- Fleet utilization
-- Fuel efficiency trends
-- Operational analytics
-- Interactive charts
-- Performance metrics
-
-### 🌙 Additional Features
-- Premium SaaS UI
-- Responsive design
-- Dark / Light mode
-- Global search
-- Notification panel
-- Modern sidebar navigation
-- Smooth animations
+- Trip Reports
+- Expense Reports
 
 ---
 
-## 🛠️ Tech Stack
+## 🌙 User Experience
 
-### Frontend
+- Premium Enterprise UI
+- Dark & Light Mode
+- Responsive Design
+- Glassmorphism Components
+- Interactive Charts
+- Modern Sidebar Navigation
+- Notification Center
+- Smooth Animations
+
+---
+
+# 📸 Project Gallery
+
+> Replace these images with your project screenshots.
+
+## 🔐 Authentication
+
+![Login](screenshots/login.png)
+
+---
+
+## 📊 Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+---
+
+## 🚛 Vehicle Management
+
+![Vehicles](screenshots/vehicles.png)
+
+---
+
+## 👨‍✈️ Driver Management
+
+![Drivers](screenshots/drivers.png)
+
+---
+
+## 🛣️ Trip Management
+
+![Trips](screenshots/trips.png)
+
+---
+
+## 🔧 Maintenance
+
+![Maintenance](screenshots/maintenance.png)
+
+---
+
+## 📍 Live Fleet Tracking
+
+![Fleet Tracking](screenshots/fleet-tracking.png)
+
+---
+
+## 📈 Analytics
+
+![Analytics](screenshots/analytics.png)
+
+---
+
+## 📑 Reports
+
+![Reports](screenshots/reports.png)
+
+---
+
+# 🏗️ System Architecture
+
+```text
+                        TransitOps
+
+                    Fleet Manager
+                           │
+                           ▼
+                React + Tailwind Frontend
+                           │
+                    React Router
+                           │
+                   Express.js Backend
+                           │
+                  Business Logic Layer
+                           │
+                      Database Layer
+```
+
+---
+
+# 🛠️ Technology Stack
+
+## Frontend
 
 - React.js
 - Vite
@@ -111,46 +254,51 @@ It provides a centralized command center for monitoring vehicles, managing drive
 - React Leaflet
 - Lucide React
 
-### Backend
+## Backend
 
 - Node.js
 - Express.js
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```text
-TransitOps/
+TransitOps
 │
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── layouts/
-│   │   ├── context/
-│   │   ├── data/
-│   │   ├── hooks/
-│   │   └── assets/
+├── frontend
+│   ├── src
+│   │   ├── assets
+│   │   ├── components
+│   │   ├── context
+│   │   ├── data
+│   │   ├── hooks
+│   │   ├── layouts
+│   │   ├── pages
+│   │   ├── routes
+│   │   └── styles
 │   │
 │   └── package.json
 │
-├── backend/
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
-│   ├── middleware/
+├── backend
+│   ├── controllers
+│   ├── middleware
+│   ├── routes
+│   ├── models
+│   ├── config
 │   ├── server.js
 │   └── package.json
+│
+├── screenshots
 │
 └── README.md
 ```
 
 ---
 
-## 🚀 Installation
+# 🚀 Getting Started
 
-### Clone Repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/your-username/transitops.git
@@ -158,7 +306,9 @@ git clone https://github.com/your-username/transitops.git
 cd transitops
 ```
 
-### Install Frontend
+---
+
+## Frontend Setup
 
 ```bash
 cd frontend
@@ -168,7 +318,9 @@ npm install
 npm run dev
 ```
 
-### Install Backend
+---
+
+## Backend Setup
 
 ```bash
 cd backend
@@ -180,38 +332,38 @@ npm run dev
 
 ---
 
-## 📱 Modules
+# 📌 Modules
 
+- Authentication
 - Dashboard
-- Vehicles
-- Drivers
-- Trips
+- Vehicle Management
+- Driver Management
+- Trip Management
 - Maintenance
 - Fuel Logs
-- Expenses
+- Expense Management
 - Reports
-- Live Fleet Tracking
+- Fleet Tracking
 - Analytics
-- Authentication
+- Notifications
 - Settings
 
 ---
 
-## 🎨 UI Highlights
+# 🎯 Highlights
 
-- Enterprise SaaS Dashboard
-- Glassmorphism Cards
-- Responsive Layout
-- Sidebar Navigation
-- Interactive Tables
-- Analytics Charts
-- Dark Mode
-- Premium Animations
-- Clean Typography
+- Modern Enterprise SaaS Interface
+- Responsive Design
+- Dark / Light Theme
+- Interactive Charts
+- Modular React Components
+- Clean Folder Structure
+- Reusable UI Components
+- Premium Dashboard Experience
 
 ---
 
-## 🎯 Future Enhancements
+# 🛣️ Future Roadmap
 
 - AI Route Optimization
 - ETA Prediction
@@ -219,23 +371,29 @@ npm run dev
 - Driver Behavior Analytics
 - Fuel Consumption Prediction
 - Emergency Route Planning
-- Live GPS Integration
-- AI Chat Assistant
-- Real-time Notifications
-- Role-Based Access Control
+- AI Assistant
+- Real-time GPS Integration
+- Smart Fleet Recommendations
+- Multi-language Support
 
 ---
 
-## 🤝 Contributors
+# 👥 Team
 
-**TransitOps** was built during the **Odoo Hackathon 2026** by:
+Built during **Odoo Hackathon 2026** by:
 
-- **Ritik Raj**
-- **Shivangi Joshi**
-- **Rupesh Kumar**
-
-Our goal was to create a scalable, enterprise-grade Smart Transport Operations Platform that enhances fleet visibility, streamlines operations, and provides actionable insights through an intuitive dashboard and analytics.
+| Contributor | Role |
+|-------------|------|
+| **Shivangi Joshi** | Frontend Development • UI/UX Design |
+| **Ritik Raj** | Backend Development • API Integration |
+| **Rupesh Kumar** | Backend Development • Database & Business Logic |
 
 ---
 
-⭐ If you found this project interesting, consider giving it a star!
+<div align="center">
+
+### ⭐ If you found this project interesting, consider giving it a Star!
+
+Built with ❤️ by Team AlgoCrafters
+
+</div>
