@@ -37,4 +37,12 @@ router
           validate(updateTripBodySchema, 'body'),   tripController.updateTrip)
   .delete(validate(tripIdParamSchema,    'params'), tripController.deleteTrip);
 
+// ── Dispatch route ────────────────────────────────────────────────────────────
+router.patch(
+  '/:id/dispatch',
+  validate(tripIdParamSchema, 'params'),
+  tripController.dispatchTrip
+);
+
 export default router;
+

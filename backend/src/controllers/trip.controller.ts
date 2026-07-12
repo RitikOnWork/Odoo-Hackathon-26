@@ -80,3 +80,15 @@ export const deleteTrip = asyncHandler(
     );
   },
 );
+
+// ── PATCH /api/trips/:id/dispatch ─────────────────────────────────────────────
+export const dispatchTrip = asyncHandler(
+  async (req: Request, res: Response, _next: NextFunction) => {
+    const trip = await tripService.dispatchTrip(req.params.id);
+
+    res.status(200).json(
+      new ApiResponse(200, trip, `Trip ${trip.tripNumber} dispatched successfully`),
+    );
+  },
+);
+

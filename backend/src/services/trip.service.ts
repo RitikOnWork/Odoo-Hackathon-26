@@ -73,8 +73,8 @@ async function validateTripPreConditions(
 ): Promise<void> {
   // Fetch both in parallel — one round-trip to the DB
   const [vehicle, driver] = await Promise.all([
-    Vehicle.findById(vehicleId).select('status plateNumber capacity').lean(),
-    Driver.findById(driverId).select('status licenseExpiry name').lean(),
+    Vehicle.findById(vehicleId).select('status registrationNumber maxLoadCapacity').lean(),
+    Driver.findById(driverId).select('status licenseExpiryDate name').lean(),
   ]);
 
   // ── Vehicle checks ────────────────────────────────────────────────────────
@@ -85,26 +85,26 @@ async function validateTripPreConditions(
   if (vehicle.status === VehicleStatus.RETIRED) {
     throw new ApiError(
       422,
-      `Vehicle "${vehicle.plateNumber}" is Retired and cannot be assigned to a trip`,
+      `Vehicle "${vehicle.registrationNumber}" is Retired and cannot be assigned to a trip`,
     );
   }
 
   if (vehicle.status === VehicleStatus.IN_SHOP) {
     throw new ApiError(
       422,
-      `Vehicle "${vehicle.plateNumber}" is currently In Shop (under maintenance) and cannot be dispatched`,
+      `Vehicle "${vehicle.registrationNumber}" is currently In Shop (under maintenance) and cannot be dispatched`,
     );
   }
 
   if (vehicle.status !== VehicleStatus.AVAILABLE) {
     throw new ApiError(
       422,
-      `Vehicle "${vehicle.plateNumber}" is not Available. Current status: ${vehicle.status}`,
+      `Vehicle "${vehicle.registrationNumber}" is not Available. Current status: ${vehicle.status}`,
     );
   }
 
   // ── Cargo weight vs vehicle capacity ─────────────────────────────────────
-  if (cargoWeight > vehicle.capacity) {
+  if (cargoWeight > vehicle.maxLoadCapacity) {
     throw new ApiError(
       400,
       'Cargo weight exceeds vehicle capacity.',
@@ -124,8 +124,8 @@ async function validateTripPreConditions(
   }
 
   const now = new Date();
-  if (new Date(driver.licenseExpiry) <= now) {
-    const expiredOn = new Date(driver.licenseExpiry).toLocaleDateString('en-IN');
+  if (new Date(driver.licenseExpiryDate) <= now) {
+    const expiredOn = new Date(driver.licenseExpiryDate).toLocaleDateString('en-IN');
     throw new ApiError(
       422,
       `Driver "${driver.name}" has an expired license (expired on ${expiredOn}). Renew the license before assigning trips`,
@@ -194,7 +194,7 @@ export async function getAllTrips(query: TripListQuery = {}) {
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-    .populate('vehicle', 'plateNumber type')
+    .populate('vehicle', 'registrationNumber type')
     .populate('driver',  'name licenseNumber');
 
   return {
@@ -217,8 +217,8 @@ export async function getTripById(id: string) {
   assertObjectId(id, 'trip ID');
 
   const trip = await Trip.findById(id)
-    .populate('vehicle', 'plateNumber type capacity')
-    .populate('driver',  'name licenseNumber phone');
+    .populate('vehicle', 'registrationNumber type maxLoadCapacity')
+    .populate('driver',  'name licenseNumber contactNumber');
 
   if (!trip) {
     throw new ApiError(404, `Trip not found`);
@@ -295,3 +295,68 @@ export async function deleteTrip(id: string) {
   await Trip.deleteOne({ _id: id });
   return { tripNumber: trip.tripNumber };
 }
+
+/**
+ * PATCH /api/trips/:id/dispatch
+ * Atomically dispatches a trip:
+ *  - Enforces status = Draft
+ *  - Sets trip status to Dispatched and dispatchedAt to now
+ *  - Sets vehicle status to On Trip
+ *  - Sets driver status to On Trip
+ *
+ * Uses Mongoose transaction session to ensure all or nothing is committed.
+ */
+export async function dispatchTrip(id: string) {
+  assertObjectId(id, 'trip ID');
+
+  const trip = await Trip.findById(id);
+  if (!trip) {
+    throw new ApiError(404, 'Trip not found');
+  }
+
+  if (trip.status !== TripStatus.DRAFT) {
+    throw new ApiError(
+      409,
+      `Only Draft trips can be dispatched. Current status: ${trip.status}`
+    );
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    // 1. Update Trip status & dispatchedAt timestamp
+    trip.status = TripStatus.DISPATCHED;
+    trip.dispatchedAt = new Date();
+    await trip.save({ session });
+
+    // 2. Update Vehicle status to On Trip
+    const vehicle = await Vehicle.findByIdAndUpdate(
+      trip.vehicle,
+      { status: VehicleStatus.ON_TRIP },
+      { session, new: true }
+    );
+    if (!vehicle) {
+      throw new ApiError(404, 'Vehicle assigned to this trip not found');
+    }
+
+    // 3. Update Driver status to On Trip
+    const driver = await Driver.findByIdAndUpdate(
+      trip.driver,
+      { status: DriverStatus.ON_TRIP },
+      { session, new: true }
+    );
+    if (!driver) {
+      throw new ApiError(404, 'Driver assigned to this trip not found');
+    }
+
+    await session.commitTransaction();
+    return trip;
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+}
+

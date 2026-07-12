@@ -25,7 +25,6 @@ export enum MaintenanceType {
   INSPECTION  = 'Inspection',
 }
 
-<<<<<<< HEAD
 // ── User / Auth ────────────────────────────────────────────────────────────────
 export enum UserRole {
   FLEET_MANAGER     = 'Fleet Manager',
@@ -34,22 +33,6 @@ export enum UserRole {
   FINANCIAL_ANALYST = 'Financial Analyst',
 }
 
-// ── Vehicle ───────────────────────────────────────────────────────────────────
-export enum VehicleStatus {
-  AVAILABLE = 'Available',
-  ON_TRIP   = 'On Trip',
-  IN_SHOP   = 'In Shop',
-  RETIRED   = 'Retired',
-}
-
-// ── Driver (fleet driver profile) ─────────────────────────────────────────────
-export enum DriverStatus {
-  AVAILABLE = 'Available',
-  ON_TRIP   = 'On Trip',
-  OFF_DUTY  = 'Off Duty',
-  SUSPENDED = 'Suspended',
-}
-=======
 // ── Vehicle ───────────────────────────────────────────────────────────────────
 export enum VehicleStatus {
   AVAILABLE = 'Available',
@@ -62,8 +45,8 @@ export enum VehicleStatus {
 export enum DriverStatus {
   AVAILABLE = 'Available',
   ON_TRIP   = 'On Trip',   // currently assigned to an active trip
+  OFF_DUTY  = 'Off Duty',
   ON_LEAVE  = 'On Leave',  // temporary leave — cannot be dispatched
   SUSPENDED = 'Suspended', // disciplinary / compliance hold
 }
 
->>>>>>> 5e3340f331afcc3c13731876201c79dc18f61cda
