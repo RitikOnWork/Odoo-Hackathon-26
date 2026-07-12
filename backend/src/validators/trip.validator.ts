@@ -57,6 +57,17 @@ export const createTripSchema = z.object({
 
 export type CreateTripInput = z.infer<typeof createTripSchema>;
 
+// ── Update Trip Body (PUT /trips/:id) ─────────────────────────────────────────
+// All fields optional; at least one must be provided.
+export const updateTripBodySchema = createTripSchema
+  .partial()
+  .refine(
+    (data) => Object.keys(data).length > 0,
+    { message: 'At least one field must be provided to update' },
+  );
+
+export type UpdateTripBodyInput = z.infer<typeof updateTripBodySchema>;
+
 // ── Update Trip Status ────────────────────────────────────────────────────────
 export const updateTripStatusSchema = z.object({
   status: z.nativeEnum(TripStatus, {

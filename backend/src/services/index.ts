@@ -1,19 +1,12 @@
 /**
- * services/
- *
- * Purpose: Business logic layer — the brain of the application.
- *
- * What goes here:
- *  - auth.service.ts     → register/login logic, token generation, bcrypt hashing
- *  - vehicle.service.ts  → fleet management operations
- *  - driver.service.ts   → driver assignment, availability checks
- *  - route.service.ts    → route optimisation, stop management
- *  - trip.service.ts     → trip lifecycle (schedule → active → completed)
- *  - notification.service.ts → send alerts / push notifications
- *
- * Rule:
- *  - Services talk to Models (database) but never to req/res (HTTP).
- *  - Controllers call services; services call models.
- *  - Complex orchestration that spans multiple models lives in services.
- *  - All async functions must propagate errors (throw, not swallow).
+ * services/index.ts
+ * Barrel export — import any service from '@services'.
  */
+
+export * as tripService from './trip.service';
+
+// Future services — uncomment as you build them:
+// export * as maintenanceService from './maintenance.service';
+// export * as authService        from './auth.service';
+// export * as vehicleService     from './vehicle.service';
+// export * as driverService      from './driver.service';
