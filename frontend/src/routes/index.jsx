@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import DashboardLayout from '../components/layout/DashboardLayout';
+import Layout from '../components/Layout';
+import Login from '../pages/Login';
 import DashboardPage from '../pages/DashboardPage';
 import VehiclesPage from '../pages/VehiclesPage';
 import DriversPage from '../pages/DriversPage';
@@ -13,8 +14,10 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<DashboardLayout />}>
-          <Route path="/" element={<DashboardPage />} />
+        <Route path="/login" element={<Login />} />
+
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/vehicles" element={<VehiclesPage />} />
           <Route path="/drivers" element={<DriversPage />} />
           <Route path="/trips" element={<TripsPage />} />
@@ -23,6 +26,8 @@ const AppRoutes = () => {
           <Route path="/expenses" element={<ExpensesPage />} />
           <Route path="/reports" element={<ReportsPage />} />
         </Route>
+
+        <Route path="*" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

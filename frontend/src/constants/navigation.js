@@ -1,5 +1,5 @@
 export const navigationItems = [
-  { label: 'Dashboard', path: '/' },
+  { label: 'Dashboard', path: '/dashboard' },
   { label: 'Vehicles', path: '/vehicles' },
   { label: 'Drivers', path: '/drivers' },
   { label: 'Trips', path: '/trips' },
