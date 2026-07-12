@@ -67,12 +67,13 @@ function assertObjectId(value: string, fieldName: string): void {
  *    8. Driver status is Available
  */
 async function validateTripPreConditions(
-  vehicleId: string,
-  driverId:  string,
+  vehicleId:   string,
+  driverId:    string,
+  cargoWeight: number,
 ): Promise<void> {
   // Fetch both in parallel — one round-trip to the DB
   const [vehicle, driver] = await Promise.all([
-    Vehicle.findById(vehicleId).select('status plateNumber').lean(),
+    Vehicle.findById(vehicleId).select('status plateNumber capacity').lean(),
     Driver.findById(driverId).select('status licenseExpiry name').lean(),
   ]);
 
@@ -99,6 +100,14 @@ async function validateTripPreConditions(
     throw new ApiError(
       422,
       `Vehicle "${vehicle.plateNumber}" is not Available. Current status: ${vehicle.status}`,
+    );
+  }
+
+  // ── Cargo weight vs vehicle capacity ─────────────────────────────────────
+  if (cargoWeight > vehicle.capacity) {
+    throw new ApiError(
+      400,
+      'Cargo weight exceeds vehicle capacity.',
     );
   }
 
@@ -147,7 +156,8 @@ export async function createTrip(input: CreateTripInput) {
   // ── Pre-creation eligibility checks ──────────────────────────────────────
   // Validates vehicle + driver exist and are eligible before touching the
   // trips collection. Throws a descriptive 404/422 ApiError on any failure.
-  await validateTripPreConditions(vehicleId, driverId);
+  await validateTripPreConditions(vehicleId, driverId, rest.cargoWeight);
+
 
   const trip = await Trip.create({
     ...rest,
