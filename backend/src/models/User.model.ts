@@ -57,8 +57,14 @@ const UserSchema = new Schema<IUserDocument>(
   {
     timestamps: true,              // adds createdAt & updatedAt automatically
     versionKey: false,             // removes __v field
-    toJSON:     { virtuals: true },
-    toObject:   { virtuals: true },
+    toJSON: {
+      virtuals: true,
+      transform: (_doc, ret: Record<string, unknown>) => {
+        delete ret.password;   // belt-and-braces — never serialize the hash, even if `+password` was selected
+        return ret;
+      },
+    },
+    toObject: { virtuals: true },
   }
 );
 

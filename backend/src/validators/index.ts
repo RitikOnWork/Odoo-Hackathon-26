@@ -8,8 +8,8 @@
 
 export * from './trip.validator';
 export * from './maintenance.validator';
+export * from './auth.validator';
 
 // Future validators — uncomment as you build them:
-// export * from './auth.validator';
 // export * from './vehicle.validator';
 // export * from './driver.validator';
