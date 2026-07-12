@@ -1,0 +1,42 @@
+export const notifications = [
+  {
+    id: 1,
+    title: 'Bus 102 delayed',
+    time: '2 min ago',
+    text: 'Traffic congestion near MG Road has impacted arrival time.',
+    priority: 'High',
+    status: 'warning',
+  },
+  {
+    id: 2,
+    title: 'Maintenance scheduled tomorrow',
+    time: '18 min ago',
+    text: 'Inspection for BUS-318 is planned for 08:30.',
+    priority: 'Medium',
+    status: 'info',
+  },
+  {
+    id: 3,
+    title: 'Fuel consumption exceeded limit',
+    time: '42 min ago',
+    text: 'BUS-410 crossed the expected consumption threshold.',
+    priority: 'High',
+    status: 'danger',
+  },
+  {
+    id: 4,
+    title: 'New driver assigned',
+    time: '1 hr ago',
+    text: 'Rakesh has been assigned to the North Corridor route.',
+    priority: 'Low',
+    status: 'success',
+  },
+  {
+    id: 5,
+    title: 'Trip completed',
+    time: '2 hrs ago',
+    text: 'Airport shuttle completed on time and closed successfully.',
+    priority: 'Medium',
+    status: 'success',
+  },
+];

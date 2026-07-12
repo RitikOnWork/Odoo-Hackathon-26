@@ -10,6 +10,10 @@ import MaintenancePage from '../pages/MaintenancePage';
 import FuelLogsPage from '../pages/FuelLogsPage';
 import ExpensesPage from '../pages/ExpensesPage';
 import ReportsPage from '../pages/ReportsPage';
+import FleetTrackingPage from '../pages/FleetTrackingPage';
+import RouteOptimizationPage from '../pages/RouteOptimizationPage';
+import AnalyticsPage from '../pages/AnalyticsPage';
+import SettingsPage from '../pages/SettingsPage';
 
 const AppRoutes = () => {
   return (
@@ -27,6 +31,10 @@ const AppRoutes = () => {
           <Route path="/fuel-logs" element={<FuelLogsPage />} />
           <Route path="/expenses" element={<ExpensesPage />} />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/fleet-tracking" element={<FleetTrackingPage />} />
+          <Route path="/route-optimization" element={<RouteOptimizationPage />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
         <Route path="*" element={<Login />} />

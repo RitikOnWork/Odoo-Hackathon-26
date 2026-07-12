@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { navigationItems } from '../../constants/navigation';
-import { LayoutGrid, Menu, X, Bus, Users, Route, Wrench, Fuel, BadgeDollarSign, BarChart3, Settings, ChevronRight, LogOut } from 'lucide-react';
+import { LayoutGrid, Menu, X, Bus, Users, Route, Wrench, Fuel, BadgeDollarSign, BarChart3, Settings, ChevronRight, LogOut, Radar, Compass } from 'lucide-react';
 
 const iconMap = {
   Dashboard: LayoutGrid,
@@ -13,6 +13,8 @@ const iconMap = {
   Expenses: BadgeDollarSign,
   Reports: BarChart3,
   Analytics: BarChart3,
+  'Live Fleet': Bus,
+  'Route AI': Compass,
   Settings: Settings,
 };
 

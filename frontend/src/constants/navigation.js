@@ -7,4 +7,8 @@ export const navigationItems = [
   { label: 'Fuel Logs', path: '/fuel-logs' },
   { label: 'Expenses', path: '/expenses' },
   { label: 'Reports', path: '/reports' },
+  { label: 'Live Fleet', path: '/fleet-tracking' },
+  { label: 'Route AI', path: '/route-optimization' },
+  { label: 'Analytics', path: '/analytics' },
+  { label: 'Settings', path: '/settings' },
 ];

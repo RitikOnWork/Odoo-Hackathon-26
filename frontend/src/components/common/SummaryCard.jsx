@@ -8,9 +8,11 @@ const SummaryCard = ({ title, value, status, icon: Icon, accent = 'from-sky-500 
           <p className="text-sm font-medium text-slate-500">{title}</p>
           <p className="mt-3 text-3xl font-semibold text-slate-900">{value}</p>
         </div>
-        <div className={`rounded-2xl bg-gradient-to-br ${accent} p-3 text-white shadow-lg`}>
-          <Icon />
-        </div>
+        {Icon ? (
+          <div className={`rounded-2xl bg-gradient-to-br ${accent} p-3 text-white shadow-lg`}>
+            <Icon className="h-5 w-5" />
+          </div>
+        ) : null}
       </div>
 
       <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3">

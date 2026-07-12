@@ -1,10 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './layout/Sidebar';
 import Navbar from './layout/Navbar';
+import AIButton from './common/AIButton';
 
 const Layout = () => {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="flex min-h-screen">
         <Sidebar />
 
@@ -13,6 +14,7 @@ const Layout = () => {
 
           <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
             <Outlet />
+            <AIButton />
           </main>
         </div>
       </div>

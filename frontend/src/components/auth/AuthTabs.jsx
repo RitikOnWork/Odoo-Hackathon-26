@@ -9,7 +9,7 @@ const AuthTabs = ({ active }) => {
   ];
 
   return (
-    <div className="mb-6 grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1.5">
+    <div className="mb-6 grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1.5 dark:bg-slate-800">
       {tabs.map((tab) => {
         const isActive = active === tab.id;
 
@@ -18,7 +18,7 @@ const AuthTabs = ({ active }) => {
             key={tab.id}
             type="button"
             onClick={() => navigate(tab.path)}
-            className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${isActive ? 'bg-gradient-to-r from-sky-600 to-blue-700 text-white shadow-lg shadow-sky-200' : 'bg-transparent text-slate-600 hover:text-slate-900'}`}
+            className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${isActive ? 'bg-gradient-to-r from-sky-600 to-blue-700 text-white shadow-lg shadow-sky-200' : 'bg-transparent text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100'}`}
           >
             {tab.label}
           </button>

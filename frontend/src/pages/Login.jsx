@@ -83,7 +83,7 @@ const Login = () => {
           />
 
           <div className="flex items-center justify-between gap-3 text-sm">
-            <label className="flex items-center gap-2 text-slate-600">
+            <label className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
               <input
                 type="checkbox"
                 checked={rememberMe}
@@ -92,7 +92,7 @@ const Login = () => {
               />
               Remember me
             </label>
-            <a href="#" className="font-medium text-sky-600 transition hover:text-sky-700">Forgot password?</a>
+            <a href="#" className="font-medium text-sky-600 transition hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300">Forgot password?</a>
           </div>
 
           <button
@@ -105,9 +105,9 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="mt-5 text-center text-sm text-slate-500">
+        <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">
           New to TransitOps?{' '}
-          <button type="button" onClick={() => navigate('/signup')} className="font-semibold text-sky-600 transition hover:text-sky-700">
+          <button type="button" onClick={() => navigate('/signup')} className="font-semibold text-sky-600 transition hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300">
             Create Account
           </button>
         </p>

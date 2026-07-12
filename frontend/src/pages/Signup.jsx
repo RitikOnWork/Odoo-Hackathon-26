@@ -117,12 +117,12 @@ const Signup = () => {
           />
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="role">Role</label>
+            <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300" htmlFor="role">Role</label>
             <select
               id="role"
               value={formData.role}
               onChange={(event) => handleChange('role', event.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-sky-400 focus:bg-white"
+              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-sky-400 focus:bg-white dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-100 dark:focus:border-sky-500 dark:focus:bg-slate-900"
             >
               <option>Fleet Manager</option>
               <option>Transport Administrator</option>
@@ -153,7 +153,7 @@ const Signup = () => {
         />
 
         {successMessage ? (
-          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300">
             {successMessage}
           </div>
         ) : null}
@@ -168,9 +168,9 @@ const Signup = () => {
         </button>
       </form>
 
-      <p className="mt-5 text-center text-sm text-slate-500">
+      <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">
         Already have an account?{' '}
-        <button type="button" onClick={() => navigate('/login')} className="font-semibold text-sky-600 transition hover:text-sky-700">
+        <button type="button" onClick={() => navigate('/login')} className="font-semibold text-sky-600 transition hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300">
           Sign in
         </button>
       </p>

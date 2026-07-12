@@ -6,7 +6,7 @@ const PasswordInput = ({ label, id, value, onChange, placeholder, error, autoCom
 
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor={id}>
+      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300" htmlFor={id}>
         {label}
       </label>
       <div className="relative">
@@ -17,7 +17,7 @@ const PasswordInput = ({ label, id, value, onChange, placeholder, error, autoCom
           value={value}
           onChange={onChange}
           autoComplete={autoComplete}
-          className={`w-full rounded-2xl border bg-slate-50 py-3 pl-10 pr-12 text-sm text-slate-700 outline-none transition focus:bg-white ${error ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-sky-400'}`}
+          className={`w-full rounded-2xl border bg-slate-50 py-3 pl-10 pr-12 text-sm text-slate-700 outline-none transition focus:bg-white dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-100 dark:focus:bg-slate-900 ${error ? 'border-rose-300 focus:border-rose-400 dark:border-rose-500 dark:focus:border-rose-400' : 'border-slate-200 focus:border-sky-400 dark:focus:border-sky-500'}`}
           placeholder={placeholder}
         />
         <button
