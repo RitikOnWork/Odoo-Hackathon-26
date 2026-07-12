@@ -8,6 +8,11 @@ import {
   FiTrendingUp,
 } from 'react-icons/fi';
 import KpiCard from '../components/dashboard/KpiCard';
+import AnalyticsCard from '../components/charts/AnalyticsCard';
+import VehicleStatusChart from '../components/charts/VehicleStatusChart';
+import TripStatusChart from '../components/charts/TripStatusChart';
+import FuelConsumptionChart from '../components/charts/FuelConsumptionChart';
+import OperationalCostChart from '../components/charts/OperationalCostChart';
 
 const kpis = [
   {
@@ -62,10 +67,26 @@ const kpis = [
 ];
 
 const analyticsCards = [
-  { title: 'Vehicle Status' },
-  { title: 'Trip Status' },
-  { title: 'Fuel Consumption' },
-  { title: 'Operational Cost' },
+  {
+    title: 'Vehicle Status',
+    subtitle: 'Current fleet availability mix',
+    component: <VehicleStatusChart />,
+  },
+  {
+    title: 'Trip Status',
+    subtitle: 'Live dispatch performance snapshot',
+    component: <TripStatusChart />,
+  },
+  {
+    title: 'Fuel Consumption',
+    subtitle: 'Daily usage over the last 7 days',
+    component: <FuelConsumptionChart />,
+  },
+  {
+    title: 'Operational Cost',
+    subtitle: 'Spend distribution across categories',
+    component: <OperationalCostChart />,
+  },
 ];
 
 const DashboardPage = () => {
@@ -87,12 +108,9 @@ const DashboardPage = () => {
 
       <div className="grid gap-4 lg:grid-cols-2">
         {analyticsCards.map((card) => (
-          <div key={card.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">{card.title}</h2>
-            <div className="mt-8 flex min-h-40 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 text-sm text-slate-500">
-              Chart will be added here
-            </div>
-          </div>
+          <AnalyticsCard key={card.title} title={card.title} subtitle={card.subtitle}>
+            {card.component}
+          </AnalyticsCard>
         ))}
       </div>
     </div>
